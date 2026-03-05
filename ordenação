@@ -1,0 +1,87 @@
+#include <stdio.h>
+
+// Função para trocar dois valores
+void trocar(int *a, int *b) {
+    int temp = *a;
+    *a = *b;
+    *b = temp;
+}
+
+// Função heapify
+void heapify(int arr[], int n, int i) {
+    int maior = i;
+    int esquerda = 2 * i + 1;
+    int direita = 2 * i + 2;
+
+    if (esquerda < n && arr[esquerda] > arr[maior])
+        maior = esquerda;
+
+    if (direita < n && arr[direita] > arr[maior])
+        maior = direita;
+
+    if (maior != i) {
+        trocar(&arr[i], &arr[maior]);
+        heapify(arr, n, maior);
+    }
+}
+
+// HeapSort
+void heapSort(int arr[], int n) {
+
+    // Construir Max Heap
+    for (int i = n / 2 - 1; i >= 0; i--)
+        heapify(arr, n, i);
+
+    // Extrair elementos do heap
+    for (int i = n - 1; i > 0; i--) {
+        trocar(&arr[0], &arr[i]);
+        heapify(arr, i, 0);
+    }
+}
+
+// ShellSort
+void shellSort(int arr[], int n) {
+
+    for (int gap = n / 2; gap > 0; gap /= 2) {
+
+        for (int i = gap; i < n; i++) {
+
+            int temp = arr[i];
+            int j;
+
+            for (j = i; j >= gap && arr[j - gap] > temp; j -= gap) {
+                arr[j] = arr[j - gap];
+            }
+
+            arr[j] = temp;
+        }
+    }
+}
+
+// Imprimir vetor
+void imprimir(int arr[], int n) {
+    for (int i = 0; i < n; i++)
+        printf("%d ", arr[i]);
+    printf("\n");
+}
+
+int main() {
+
+    int vetor1[] = {30, 12, 45, 6, 18, 3};
+    int vetor2[] = {30, 12, 45, 6, 18, 3};
+
+    int n = sizeof(vetor1) / sizeof(vetor1[0]);
+
+    printf("Vetor original:\n");
+    imprimir(vetor1, n);
+
+    heapSort(vetor1, n);
+    printf("\nOrdenado com HeapSort:\n");
+    imprimir(vetor1, n);
+
+    shellSort(vetor2, n);
+    printf("\nOrdenado com ShellSort:\n");
+    imprimir(vetor2, n);
+
+    return 0;
+}
